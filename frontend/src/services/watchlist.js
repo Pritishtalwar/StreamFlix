@@ -6,7 +6,9 @@ export function getWatchlist() {
   }
 
   return JSON.parse(watchlist)
-}export function addToWatchlist(movie) {
+}
+
+export function addToWatchlist(movie) {
   const watchlist = getWatchlist()
 
   const alreadyExists = watchlist.some(
@@ -22,5 +24,18 @@ export function getWatchlist() {
   localStorage.setItem(
     'watchlist',
     JSON.stringify(watchlist)
+  )
+}
+
+export function removeFromWatchlist(movieId) {
+  const watchlist = getWatchlist()
+
+  const updatedWatchlist = watchlist.filter(
+    (movie) => movie.id !== movieId
+  )
+
+  localStorage.setItem(
+    'watchlist',
+    JSON.stringify(updatedWatchlist)
   )
 }
