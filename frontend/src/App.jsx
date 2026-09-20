@@ -1,6 +1,7 @@
 import './App.css'
 
 import { Routes, Route } from 'react-router-dom'
+import Movies from './pages/Movies'
 
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -42,6 +43,11 @@ function App() {
           element={<MyList />}
         />
 
+        <Route
+          path="/movies"
+          element={<Movies />}
+        />
+        
       </Routes>
     </>
   )

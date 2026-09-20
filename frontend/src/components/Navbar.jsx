@@ -9,27 +9,11 @@ function Navbar() {
       </Link>
 
       <div className="nav-links">
-
-        <Link to="/">
-          Home
-        </Link>
-
-        <Link to="/">
-          Movies
-        </Link>
-
-        <Link to="/">
-          Series
-        </Link>
-
-        <Link to="/">
-          Categories
-        </Link>
-
-        <Link to="/my-list">
-          My List
-        </Link>
-
+        <Link to="/">Home</Link>
+        <Link to="/movies">Movies</Link>
+        <Link to="/">Series</Link>
+        <Link to="/">Categories</Link>
+        <Link to="/my-list">My List</Link>
       </div>
 
       <div className="nav-actions">
