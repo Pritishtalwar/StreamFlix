@@ -13,6 +13,8 @@ import TopRated from './components/TopRated'
 import MovieDetails from './pages/MovieDetails'
 import MyList from './pages/MyList'
 
+import Series from './pages/Series'
+
 function App() {
   return (
     <>
@@ -46,6 +48,11 @@ function App() {
         <Route
           path="/movies"
           element={<Movies />}
+        />
+        
+        <Route
+          path="/series"
+          element={<Series />}
         />
         
       </Routes>

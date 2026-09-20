@@ -80,3 +80,16 @@ export async function getTopRatedMovies() {
 
   return data;
 } 
+
+export async function getPopularSeries() {
+  const response = await fetch(`${BASE_URL}/tv/popular`, {
+    headers: {
+      Authorization: `Bearer ${TOKEN}`,
+      accept: "application/json",
+    },
+  });
+
+  const data = await response.json();
+
+  return data;
+}
