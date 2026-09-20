@@ -628,3 +628,10 @@ body {
   background: #ff3b30;
   border-color: #ff3b30;
 }
+
+.search-button {
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  cursor: pointer;
+}

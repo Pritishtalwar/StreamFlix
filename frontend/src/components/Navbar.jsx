@@ -18,8 +18,9 @@ function Navbar() {
 
       <div className="nav-actions">
 
-        <button>🔍</button>
-
+      <Link to="/search" className="search-button">
+        🔍
+      </Link>
         <button>👤</button>
 
       </div>

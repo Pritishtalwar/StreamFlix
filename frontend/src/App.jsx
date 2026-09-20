@@ -25,7 +25,6 @@ function App() {
           element={
             <>
               <Hero />
-              <Search />
               <Trending />
               <Popular />
               <TopRated />
@@ -61,7 +60,11 @@ function App() {
           path="/categories"
           element={<Categories />}
         />
-  
+        <Route
+          path="/search"
+          element={<Search />}
+        />
+
       </Routes>
     </>
   )
