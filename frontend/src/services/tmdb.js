@@ -122,3 +122,32 @@ function Series() {
 }
 
 export default Series
+
+export async function getMovieGenres() {
+  const response = await fetch(`${BASE_URL}/genre/movie/list`, {
+    headers: {
+      Authorization: `Bearer ${TOKEN}`,
+      accept: "application/json",
+    },
+  })
+
+  const data = await response.json()
+
+  return data
+}
+
+export async function getMoviesByGenre(genreId) {
+  const response = await fetch(
+    `${BASE_URL}/discover/movie?with_genres=${genreId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${TOKEN}`,
+        accept: "application/json",
+      },
+    }
+  )
+
+  const data = await response.json()
+
+  return data
+}

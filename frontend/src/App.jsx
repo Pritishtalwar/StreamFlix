@@ -11,6 +11,7 @@ import TopRated from './components/TopRated'
 import MovieDetails from './pages/MovieDetails'
 import MyList from './pages/MyList'
 import Series from './pages/Series'
+import Categories from './pages/Categories'
 
 function App() {
   return (
@@ -56,7 +57,11 @@ function App() {
           path="/series"
           element={<Series />}
         />
-        
+        <Route
+          path="/categories"
+          element={<Categories />}
+        />
+  
       </Routes>
     </>
   )
