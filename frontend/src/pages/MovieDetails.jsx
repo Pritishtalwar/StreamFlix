@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import {
@@ -8,6 +9,7 @@ import { addToWatchlist } from '../services/watchlist'
 
 function MovieDetails() {
   const { id } = useParams()
+  const navigate = useNavigate()
 
   const [movie, setMovie] = useState(null)
   const [trailer, setTrailer] = useState(null)
@@ -99,29 +101,38 @@ function MovieDetails() {
               {movie.overview}
             </p>
 
-            {trailer && (
+            <div className="movie-actions">
+
+              {trailer && (
+                <button
+                  className="watch-button"
+                  onClick={() => setShowTrailer(true)}
+                >
+                  ▶ Watch Trailer
+                </button>
+              )}
+
               <button
                 className="watch-button"
-                onClick={() => setShowTrailer(true)}
+                onClick={() => navigate(`/player/${id}`)}
               >
-                ▶ Watch Trailer
+                ▶ Watch Now
               </button>
-            )}
-            <button
-  className="list-button"
-  onClick={() => addToWatchlist(movie)}
->
-  + My List
-</button>
+
+              <button
+                className="list-button"
+                onClick={() => addToWatchlist(movie)}
+              >
+                + My List
+              </button>
+
+            </div>
 
           </div>
 
         </div>
 
       </div>
-
-
-      {/* TRAILER MODAL */}
 
       {showTrailer && trailer && (
         <div className="trailer-modal">

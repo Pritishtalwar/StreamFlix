@@ -635,3 +635,44 @@ body {
   font-size: 20px;
   cursor: pointer;
 }
+
+.player-page {
+  min-height: calc(100vh - 70px);
+  padding: 50px 60px;
+  background: #0f0f0f;
+  color: white;
+}
+
+.video-player {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.video-player video {
+  width: 100%;
+  display: block;
+  border-radius: 10px;
+  background: black;
+}
+
+.video-player h2 {
+  margin-top: 20px;
+}
+
+.movie-actions {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.movie-actions button {
+  padding: 12px 22px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.movie-actions button:hover {
+  opacity: 0.85;
+}
