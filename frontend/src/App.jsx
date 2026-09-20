@@ -54,10 +54,6 @@ function App() {
         />
 
         <Route
-          path="/series"
-          element={<Series />}
-        />
-        <Route
           path="/categories"
           element={<Categories />}
         />
