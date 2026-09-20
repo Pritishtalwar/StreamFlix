@@ -12,6 +12,7 @@ import MovieDetails from './pages/MovieDetails'
 import MyList from './pages/MyList'
 import Series from './pages/Series'
 import Categories from './pages/Categories'
+import Player from './pages/Player'
 
 function App() {
   return (
@@ -63,6 +64,11 @@ function App() {
         <Route
           path="/search"
           element={<Search />}
+        />
+
+        <Route
+          path="/player/:id"
+          element={<Player />}
         />
 
       </Routes>
