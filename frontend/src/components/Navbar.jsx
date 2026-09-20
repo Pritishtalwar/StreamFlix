@@ -1,22 +1,45 @@
 import { Link } from 'react-router-dom'
+
 function Navbar() {
   return (
     <nav className="navbar">
-      <div className="logo">
+
+      <Link to="/" className="logo">
         StreamFlix
-      </div>
+      </Link>
 
       <div className="nav-links">
-        <a href="#">Home</a>
-        <a href="#">Movies</a>
-        <a href="#">Series</a>
-        <a href="#">Categories</a>
+
+        <Link to="/">
+          Home
+        </Link>
+
+        <Link to="/">
+          Movies
+        </Link>
+
+        <Link to="/">
+          Series
+        </Link>
+
+        <Link to="/">
+          Categories
+        </Link>
+
+        <Link to="/my-list">
+          My List
+        </Link>
+
       </div>
 
       <div className="nav-actions">
+
         <button>🔍</button>
+
         <button>👤</button>
+
       </div>
+
     </nav>
   )
 }
