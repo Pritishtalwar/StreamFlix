@@ -1,16 +1,85 @@
-# React + Vite
+# StreamFlix
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+## Project Proposal
 
-Currently, two official plugins are available:
+### Description
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+StreamFlix is a responsive movie and series discovery website. Visitors can browse a curated catalog, search and filter titles, open a detail page, play a bundled sample video, and maintain a personal watchlist saved in their browser.
 
-## React Compiler
+### Goals
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Demonstrate semantic HTML, responsive CSS, and browser-native JavaScript.
+- Provide more than two connected pages and working navigation.
+- Implement complete watchlist CRUD using Web Storage.
+- Keep the project easy to run without a package install, build step, API key, or JavaScript library.
 
-## Expanding the Oxlint configuration
+### Specifications
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+| Area | Specification |
+| --- | --- |
+| Technology | HTML5, CSS3, and plain JavaScript (ES6+) |
+| Pages | Home, Movies, Series, title details, and My List |
+| Browse | Search titles by name, genre, or year; filter by genre |
+| Watchlist create | Add a movie or series from a card or its details page |
+| Watchlist read | View saved titles and planned/watched counts |
+| Watchlist update | Change a saved title between Planned and Watched |
+| Watchlist delete | Remove a title from My List |
+| Persistence | `localStorage` on the current browser and device |
+| Responsive design | Layouts adapt to phone, tablet, and desktop widths |
+| External dependencies | No JavaScript libraries, frameworks, API calls, or API keys |
+
+Watchlist records use this data shape:
+
+```json
+{
+  "id": "interstellar",
+  "status": "planned"
+}
+```
+
+The catalog is sample data stored in `app.js`. Poster and backdrop artwork is loaded from TMDB's image CDN; browsing and watchlist operations do not depend on the TMDB API. The sample video is stored locally in `public/sample.mp4`.
+
+### Design
+
+The visual direction is a quiet, cinematic catalog: near-black surfaces, warm off-white text, a coral action color, restrained green rating accents, large editorial headings, and poster-led browsing. Navigation and controls stay compact so titles remain the focus. The grid collapses from multiple columns to two columns on small screens, while the detail layout and navigation also adapt for mobile.
+
+### Pages and Features
+
+- `index.html`: featured title, trending picks, and series recommendations.
+- `movies.html`: searchable and genre-filterable movie catalog.
+- `series.html`: searchable and genre-filterable series catalog.
+- `movie.html?id=...`: title information and local sample video player.
+- `my-list.html`: saved titles, status editing, and removal.
+
+### Acceptance Criteria
+
+- All pages open and navigate with a static file server.
+- Search and genre filters update the visible catalog without a page reload.
+- Adding a title creates a watchlist record; saved records remain after reload.
+- The status selector updates a record, and Remove deletes it.
+- The layout remains usable at phone, tablet, and desktop widths.
+- The project runs without `npm install`, an API key, or a third-party JavaScript library.
+
+## Run Locally
+
+From this folder, start Python's built-in static server:
+
+```powershell
+py -m http.server 4173
+```
+
+Then open <http://localhost:4173>. If `py` is unavailable, use `python -m http.server 4173` instead. No package installation or build command is required. Poster artwork and web fonts need an internet connection; the catalog and watchlist logic run locally.
+
+## Project Deliverables
+
+- [ ] Add the project details to the [Web Fundamentals 2026 project sheet](https://docs.google.com/spreadsheets/d/1oUoMCgBDUgH6XzotvVgHV7kBuueprepCGq30OQHaW6A/edit?usp=drive_link) by September 30, 2026.
+- [ ] Upload the project to the assigned GitHub repository and make at least 10 genuine commits on 10 different days by October 10, 2026. Commit dates must reflect the actual work; they cannot be completed retroactively in one session.
+- [ ] Optional: deploy the static site to a cloud or static hosting provider.
+
+## Files
+
+- `app.js` contains the sample catalog, rendering, search/filter behavior, and watchlist storage operations.
+- `styles.css` contains the visual system and responsive layouts.
+- The root HTML files provide the individual pages.
+- `public/` contains the favicon and local sample video.
+- `src/assets/hero-background.jpg` is the locally stored home-page hero image.

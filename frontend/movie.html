@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#11100f" />
+    <meta name="description" content="Explore the story, rating, and details for a title on StreamFlix." />
+    <link rel="icon" type="image/svg+xml" href="./public/favicon.svg" />
+    <link rel="stylesheet" href="./styles.css" />
+    <title>Title details | StreamFlix</title>
+  </head>
+  <body>
+    <div id="site-header"></div>
+    <main id="app" data-page="details"></main>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <dialog class="player-dialog" id="player-dialog" aria-label="Video player">
+      <button class="dialog-close" type="button" data-action="close-player" aria-label="Close player">Close</button>
+      <video controls preload="metadata" src="./public/sample.mp4">Your browser does not support video playback.</video>
+    </dialog>
+    <script src="./app.js" defer></script>
+  </body>
+</html>
