@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - StreamFlix</title>
+    <link rel="icon" type="image/png" href="./public/favicon.png">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body class="auth-page">
+
+    <main class="auth-container">
+        <div class="auth-card">
+
+            <a href="./index.html" class="auth-logo">StreamFlix</a>
+
+            <h1>Welcome Back</h1>
+            <p class="auth-subtitle">Login to continue watching</p>
+
+            <form id="login-form">
+
+                <div class="auth-field">
+                    <label for="login-email">Email</label>
+                    <input
+                        type="email"
+                        id="login-email"
+                        placeholder="Enter your email"
+                        required
+                    >
+                </div>
+
+                <div class="auth-field">
+                    <label for="login-password">Password</label>
+                    <input
+                        type="password"
+                        id="login-password"
+                        placeholder="Enter your password"
+                        required
+                    >
+                </div>
+
+                <p id="login-message" class="auth-message"></p>
+
+                <button type="submit" class="auth-button">
+                    Login
+                </button>
+
+            </form>
+
+            <p class="auth-switch">
+                Don't have an account?
+                <a href="./signup.html">Create Account</a>
+            </p>
+
+            <a href="./index.html" class="auth-back">
+                ← Back to StreamFlix
+            </a>
+
+        </div>
+    </main>
+
+    <script src="./auth.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - StreamFlix</title>
+    <link rel="icon" type="image/png" href="./public/favicon.png">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body class="auth-page">
+
+    <main class="auth-container">
+        <div class="auth-card">
+
+            <a href="./index.html" class="auth-logo">StreamFlix</a>
+
+            <h1>Create Account</h1>
+            <p class="auth-subtitle">Join StreamFlix today</p>
+
+            <form id="signup-form">
+
+                <div class="auth-field">
+                    <label for="signup-name">Name</label>
+                    <input
+                        type="text"
+                        id="signup-name"
+                        placeholder="Enter your name"
+                        required
+                    >
+                </div>
+
+                <div class="auth-field">
+                    <label for="signup-email">Email</label>
+                    <input
+                        type="email"
+                        id="signup-email"
+                        placeholder="Enter your email"
+                        required
+                    >
+                </div>
+
+                <div class="auth-field">
+                    <label for="signup-password">Password</label>
+                    <input
+                        type="password"
+                        id="signup-password"
+                        placeholder="Create a password"
+                        minlength="6"
+                        required
+                    >
+                </div>
+
+                <div class="auth-field">
+                    <label for="signup-confirm-password">Confirm Password</label>
+                    <input
+                        type="password"
+                        id="signup-confirm-password"
+                        placeholder="Confirm your password"
+                        minlength="6"
+                        required
+                    >
+                </div>
+
+                <p id="signup-message" class="auth-message"></p>
+
+                <button type="submit" class="auth-button">
+                    Sign Up
+                </button>
+
+            </form>
+
+            <p class="auth-switch">
+                Already have an account?
+                <a href="./login.html">Login</a>
+            </p>
+
+            <a href="./index.html" class="auth-back">
+                ← Back to StreamFlix
+            </a>
+
+        </div>
+    </main>
+
+    <script src="./auth.js" defer></script>
+</body>
+</html>
