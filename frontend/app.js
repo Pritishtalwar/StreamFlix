@@ -1,4 +1,6 @@
 const STORAGE_KEY = 'streamflix-watchlist';
+const PLAYBACK_KEY = 'streamflix-playback-progress';
+
 const imageRoot = 'https://image.tmdb.org/t/p/';
 
 const catalog = [
@@ -10,10 +12,12 @@ const catalog = [
     runtime: '2h 08m',
     genre: 'Adventure',
     type: 'Movie',
-    description: 'A cartographer returns to the edge of the world to finish the map her father left behind. Beyond the last marked shore, the journey becomes a story about courage, memory, and finding a way home.',
+    description:
+      'A cartographer returns to the edge of the world to finish the map her father left behind. Beyond the last marked shore, the journey becomes a story about courage, memory, and finding a way home.',
     poster: 'local:hero',
     backdrop: 'local:hero'
   },
+
   {
     id: 'interstellar',
     title: 'Interstellar',
@@ -22,10 +26,12 @@ const catalog = [
     runtime: '2h 49m',
     genre: 'Sci-Fi',
     type: 'Movie',
-    description: 'A team of explorers travels beyond this galaxy to discover whether mankind has a future among the stars.',
+    description:
+      'A team of explorers travels beyond this galaxy to discover whether mankind has a future among the stars.',
     poster: '/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg',
     backdrop: '/xJHokMbljvjADYdit5fK5VQsXEG.jpg'
   },
+
   {
     id: 'dune-part-two',
     title: 'Dune: Part Two',
@@ -34,10 +40,12 @@ const catalog = [
     runtime: '2h 46m',
     genre: 'Sci-Fi',
     type: 'Movie',
-    description: 'Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.',
+    description:
+      'Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.',
     poster: '/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg',
     backdrop: '/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg'
   },
+
   {
     id: 'the-batman',
     title: 'The Batman',
@@ -46,10 +54,12 @@ const catalog = [
     runtime: '2h 56m',
     genre: 'Mystery',
     type: 'Movie',
-    description: 'Batman ventures into Gotham City’s underworld when a sadistic killer leaves behind a trail of cryptic clues.',
+    description:
+      'Batman ventures into Gotham City’s underworld when a sadistic killer leaves behind a trail of cryptic clues.',
     poster: '/74xTEgt7R36Fpooo50r9T25onhq.jpg',
     backdrop: '/b0PlSFdDwbyK0cf5RxwDpaOJQvQ.jpg'
   },
+
   {
     id: 'spider-verse',
     title: 'Across the Spider-Verse',
@@ -58,10 +68,12 @@ const catalog = [
     runtime: '2h 20m',
     genre: 'Animation',
     type: 'Movie',
-    description: 'Miles Morales is swept across the multiverse, where he meets a team of Spider-People charged with protecting its existence.',
+    description:
+      'Miles Morales is swept across the multiverse, where he meets a team of Spider-People charged with protecting its existence.',
     poster: '/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg',
     backdrop: '/4HodYYKEIsGOdinkGi2Ucz6X9i0.jpg'
   },
+
   {
     id: 'everything-everywhere',
     title: 'Everything Everywhere All at Once',
@@ -70,10 +82,12 @@ const catalog = [
     runtime: '2h 19m',
     genre: 'Adventure',
     type: 'Movie',
-    description: 'An exhausted laundromat owner discovers she is the only person who can save the many versions of the universe.',
+    description:
+      'An exhausted laundromat owner discovers she is the only person who can save the many versions of the universe.',
     poster: '/w3LxiVYdWWRvEVdn5RYq6jIqkb1.jpg',
     backdrop: '/ss0Os3uWJfQAENILHZUiU2BzqQW.jpg'
   },
+
   {
     id: 'grand-budapest',
     title: 'The Grand Budapest Hotel',
@@ -82,10 +96,12 @@ const catalog = [
     runtime: '1h 39m',
     genre: 'Comedy',
     type: 'Movie',
-    description: 'A legendary concierge and his young protégé become wrapped up in a priceless painting, a family fortune, and a changing Europe.',
+    description:
+      'A legendary concierge and his young protégé become wrapped up in a priceless painting, a family fortune, and a changing Europe.',
     poster: '/eWdyYQreja6JGCzqHWXpWHDrrPo.jpg',
     backdrop: '/nX5XotM9yprCKarRH4fzOq1VM1J.jpg'
   },
+
   {
     id: 'dark-knight',
     title: 'The Dark Knight',
@@ -94,10 +110,12 @@ const catalog = [
     runtime: '2h 32m',
     genre: 'Action',
     type: 'Movie',
-    description: 'Batman faces his greatest test when the Joker plunges Gotham into chaos and pushes its people to the edge.',
+    description:
+      'Batman faces his greatest test when the Joker plunges Gotham into chaos and pushes its people to the edge.',
     poster: '/qJ2tW6WMUDux911r6m7haRef0WH.jpg',
     backdrop: '/hqkIcbrOHL86UncnHIsHVcVmzue.jpg'
   },
+
   {
     id: 'planet-earth',
     title: 'Planet Earth',
@@ -106,10 +124,12 @@ const catalog = [
     runtime: '11 episodes',
     genre: 'Documentary',
     type: 'Series',
-    description: 'A landmark journey through the planet’s wildest habitats, revealing the lives of the animals that call them home.',
+    description:
+      'A landmark journey through the planet’s wildest habitats, revealing the lives of the animals that call them home.',
     poster: 'local:hero',
     backdrop: 'local:hero'
   },
+
   {
     id: 'the-queens-gambit',
     title: 'The Queen’s Gambit',
@@ -118,10 +138,12 @@ const catalog = [
     runtime: '7 episodes',
     genre: 'Drama',
     type: 'Series',
-    description: 'An orphaned chess prodigy fights to become the world’s greatest player while navigating a life shaped by loss and addiction.',
+    description:
+      'An orphaned chess prodigy fights to become the world’s greatest player while navigating a life shaped by loss and addiction.',
     poster: '/zU0htwkhNvBQdVSIKB9s6hgVeFK.jpg',
     backdrop: '/34OGjFEbHj0E3lE2w0iTUVq0CBz.jpg'
   },
+
   {
     id: 'our-planet',
     title: 'Our Planet',
@@ -130,13 +152,27 @@ const catalog = [
     runtime: '8 episodes',
     genre: 'Documentary',
     type: 'Series',
-    description: 'Explore the planet’s most precious habitats and the extraordinary wildlife that lives in them.',
+    description:
+      'Explore the planet’s most precious habitats and the extraordinary wildlife that lives in them.',
     poster: 'local:hero',
     backdrop: 'local:hero'
   }
 ];
 
 const byId = (id) => catalog.find((item) => item.id === id);
+
+const trailerMap = {
+  'interstellar': 'https://www.youtube.com/embed/zSWdZVtXT7E',
+  'dune-part-two': 'https://www.youtube.com/embed/Way9Dexny3w',
+  'the-batman': 'https://www.youtube.com/embed/mqqft2x_Aa4',
+  'spider-verse': 'https://www.youtube.com/embed/shW9i6k8cB0',
+  'everything-everywhere': 'https://www.youtube.com/embed/wxN1T1uxQ2g',
+  'grand-budapest': 'https://www.youtube.com/embed/1Fg5iWmQjwk',
+  'dark-knight': 'https://www.youtube.com/embed/EXeTwQWrcwY',
+  'the-queens-gambit': 'https://www.youtube.com/embed/CDrieqwSdgI'
+};
+
+const trailerUrl = (item) => trailerMap[item.id] || null;
 
 const escapeHtml = (value) =>
   String(value).replace(
@@ -178,9 +214,10 @@ function readWatchlist() {
       .filter((entry) => entry && byId(entry.id))
       .map((entry) => ({
         id: entry.id,
-        status: entry.status === 'watched'
-          ? 'watched'
-          : 'planned'
+        status:
+          entry.status === 'watched'
+            ? 'watched'
+            : 'planned'
       }));
   } catch {
     return [];
@@ -204,6 +241,53 @@ function writeWatchlist(items) {
   }
 }
 
+function readPlaybackProgress() {
+  try {
+    const progress = JSON.parse(localStorage.getItem(PLAYBACK_KEY) || '{}');
+    return progress && typeof progress === 'object' && !Array.isArray(progress)
+      ? progress
+      : {};
+  } catch {
+    return {};
+  }
+}
+
+function savePlaybackProgress(id, seconds) {
+  if (!id || !Number.isFinite(seconds) || seconds < 0) return;
+
+  const progress = readPlaybackProgress();
+  progress[id] = seconds;
+
+  try {
+    localStorage.setItem(PLAYBACK_KEY, JSON.stringify(progress));
+  } catch {
+    // Playback still works if browser storage is unavailable.
+  }
+}
+
+function restorePlaybackPosition(video, id) {
+  const seconds = Number(readPlaybackProgress()[id]);
+
+  if (
+    Number.isFinite(seconds) &&
+    seconds > 0 &&
+    Number.isFinite(video.duration) &&
+    seconds < video.duration
+  ) {
+    if (Math.abs(video.currentTime - seconds) < 1) {
+      return Promise.resolve();
+    }
+
+    return new Promise((resolve) => {
+      const onSeeked = () => resolve();
+
+      video.addEventListener('seeked', onSeeked, { once: true });
+      video.currentTime = seconds;
+    });
+  }
+
+  return Promise.resolve();
+}
 
 // =========================
 // NOTIFICATION
@@ -435,7 +519,6 @@ function renderGrid(
   return items.map(cardMarkup).join('');
 }
 
-
 // =========================
 // SECTION
 // =========================
@@ -479,6 +562,9 @@ function renderHome() {
 
   const movies = catalog.filter(
     (item) => item.type === 'Movie'
+  );
+  const series = catalog.filter(
+    (item) => item.type === 'Series'
   );
 
   document.querySelector('#app').innerHTML = `
@@ -548,7 +634,14 @@ function renderHome() {
         .slice(0, 5)
     )}
 
+    ${sectionMarkup(
+      'Series to Explore',
+      series,
+      'series.html'
+    )}
+
     <footer class="site-footer">
+
       <span>
         <strong>StreamFlix</strong>
       </span>
@@ -556,6 +649,7 @@ function renderHome() {
       <span>
         Discover your next favorite.
       </span>
+
     </footer>
   `;
 }
@@ -609,13 +703,17 @@ function renderCatalog(type) {
         </div>
 
         <span class="list-summary">
+
           <span class="summary-number">
             ${items.length}
           </span>
+
           titles
+
         </span>
 
       </div>
+
 
       <div class="catalog-tools">
 
@@ -637,6 +735,7 @@ function renderCatalog(type) {
           />
 
         </label>
+
 
         <div
           class="filter-list"
@@ -671,12 +770,14 @@ function renderCatalog(type) {
 
       </div>
 
+
       <p
         class="catalog-count"
         id="catalog-count"
       >
         Showing ${items.length} titles
       </p>
+
 
       <div
         class="movie-grid"
@@ -686,6 +787,7 @@ function renderCatalog(type) {
       </div>
 
     </section>
+
 
     <footer class="site-footer">
 
@@ -701,6 +803,7 @@ function renderCatalog(type) {
     </footer>
   `;
 
+
   let activeGenre = 'all';
 
   const input =
@@ -711,6 +814,7 @@ function renderCatalog(type) {
 
   const count =
     document.querySelector('#catalog-count');
+
 
   function updateCatalog() {
     const query =
@@ -734,10 +838,12 @@ function renderCatalog(type) {
       `Showing ${filtered.length} of ${items.length} titles`;
   }
 
+
   input.addEventListener(
     'input',
     updateCatalog
   );
+
 
   document
     .querySelectorAll('[data-genre]')
@@ -763,6 +869,7 @@ function renderCatalog(type) {
       )
     );
 
+
   if (window.location.hash === '#search') {
     input.focus({
       preventScroll: true
@@ -784,6 +891,7 @@ function renderDetails() {
 
   const app =
     document.querySelector('#app');
+
 
   if (!item) {
 
@@ -815,8 +923,12 @@ function renderDetails() {
     return;
   }
 
+
   document.title =
     `${item.title} | StreamFlix`;
+
+  const savedPosition = Number(readPlaybackProgress()[item.id]) || 0;
+
 
   app.innerHTML = `
 
@@ -827,6 +939,7 @@ function renderDetails() {
 
       <div class="details-inner">
 
+
         <img
           class="detail-poster"
           src="${posterUrl(item)}"
@@ -834,7 +947,9 @@ function renderDetails() {
           onerror="this.hidden=true"
         />
 
+
         <div class="detail-copy">
+
 
           <a
             class="back-link"
@@ -851,15 +966,22 @@ function renderDetails() {
             }
           </a>
 
+
           <p class="eyebrow">
+
             ${escapeHtml(item.type)}
+
             ·
+
             ${escapeHtml(item.genre)}
+
           </p>
+
 
           <h1>
             ${escapeHtml(item.title)}
           </h1>
+
 
           <div class="detail-facts">
 
@@ -867,15 +989,20 @@ function renderDetails() {
               ★ ${escapeHtml(item.rating)}
             </strong>
 
-            <span>${item.year}</span>
+            <span>
+              ${item.year}
+            </span>
 
             <span>
               ${escapeHtml(item.runtime)}
             </span>
 
-            <span>HD</span>
+            <span>
+              HD
+            </span>
 
           </div>
+
 
           <div class="genre-tags">
 
@@ -893,9 +1020,11 @@ function renderDetails() {
 
           </div>
 
+
           <p class="detail-description">
             ${escapeHtml(item.description)}
           </p>
+
 
           <div class="detail-actions">
 
@@ -903,9 +1032,20 @@ function renderDetails() {
               class="button button-primary"
               type="button"
               data-action="play"
+              data-id="${item.id}"
             >
-              ▶ Watch sample
+              ${savedPosition > 0 ? '▶ Continue Watching' : '▶ Watch Now'}
             </button>
+
+            <button
+              class="button button-quiet"
+              type="button"
+              data-action="trailer"
+              data-trailer="${trailerUrl(item) || ''}"
+            >
+              ▶ Watch Trailer
+            </button>
+
 
             <button
               class="button button-quiet"
@@ -918,15 +1058,18 @@ function renderDetails() {
 
           </div>
 
+
           <p class="detail-note">
-            The included sample player uses the project’s local demo video.
+            ${trailerUrl(item) ? 'Watch the official trailer before adding this title to your list.' : 'No trailer is available for this title yet.'}
           </p>
+
 
         </div>
 
       </div>
 
     </section>
+
 
     <footer class="site-footer">
 
@@ -958,22 +1101,28 @@ function renderMyList() {
     })
   );
 
+
   const watchedCount =
     items.filter(
       (item) => item.status === 'watched'
     ).length;
 
+
   const plannedCount =
     items.length - watchedCount;
 
+
   const app =
     document.querySelector('#app');
+
 
   app.innerHTML = `
 
     <section class="page-content">
 
+
       <div class="page-heading">
+
 
         <div class="page-heading-copy">
 
@@ -992,6 +1141,7 @@ function renderMyList() {
 
         </div>
 
+
         <div class="list-summary">
 
           <span class="summary-number">
@@ -1006,7 +1156,9 @@ function renderMyList() {
 
         </div>
 
+
       </div>
+
 
       ${
         items.length
@@ -1018,12 +1170,14 @@ function renderMyList() {
                   (item) => `
                     <article class="saved-item">
 
+
                       <img
                         class="saved-poster"
                         src="${posterUrl(item, 'w185')}"
                         alt="${escapeHtml(item.title)} poster"
                         onerror="this.hidden=true"
                       />
+
 
                       <div>
 
@@ -1037,17 +1191,26 @@ function renderMyList() {
 
                         </h2>
 
+
                         <p class="saved-meta">
+
                           ${item.year}
+
                           ·
+
                           ${escapeHtml(item.genre)}
+
                           ·
+
                           ★ ${escapeHtml(item.rating)}
+
                         </p>
 
                       </div>
 
+
                       <div class="saved-actions">
+
 
                         <label
                           class="sr-only"
@@ -1056,6 +1219,7 @@ function renderMyList() {
                           Viewing status for
                           ${escapeHtml(item.title)}
                         </label>
+
 
                         <select
                           class="status-select"
@@ -1075,6 +1239,7 @@ function renderMyList() {
                             Planned
                           </option>
 
+
                           <option
                             value="watched"
                             ${
@@ -1088,6 +1253,7 @@ function renderMyList() {
 
                         </select>
 
+
                         <button
                           class="button button-danger button-small"
                           type="button"
@@ -1097,7 +1263,9 @@ function renderMyList() {
                           Remove
                         </button>
 
+
                       </div>
+
 
                     </article>
                   `
@@ -1129,7 +1297,9 @@ function renderMyList() {
           `
       }
 
+
     </section>
+
 
     <footer class="site-footer">
 
@@ -1155,24 +1325,30 @@ function renderCurrentPage() {
 
   renderHeader();
 
+
   const page =
     document.querySelector('#app')?.dataset.page;
+
 
   if (page === 'home') {
     renderHome();
   }
 
+
   if (page === 'movies') {
     renderCatalog('Movie');
   }
+
 
   if (page === 'series') {
     renderCatalog('Series');
   }
 
+
   if (page === 'details') {
     renderDetails();
   }
+
 
   if (page === 'my-list') {
     renderMyList();
@@ -1183,12 +1359,18 @@ function renderCurrentPage() {
 // =========================
 // CLICK EVENTS
 // =========================
+// =========================
+// CLICK EVENTS
+// =========================
 
 document.addEventListener(
   'click',
-  (event) => {
+    (event) => {
 
+    // =========================
     // LOGIN / LOGOUT
+    // =========================
+
     const authControl =
       event.target.closest(
         '[data-auth-action]'
@@ -1216,7 +1398,10 @@ document.addEventListener(
     }
 
 
+    // =========================
     // NORMAL ACTIONS
+    // =========================
+
     const control =
       event.target.closest(
         '[data-action]'
@@ -1224,35 +1409,307 @@ document.addEventListener(
 
     if (!control) return;
 
+
     const {
       action,
       id
     } = control.dataset;
 
 
-    // ADD
+    // =========================
+    // ADD TO MY LIST
+    // =========================
+
     if (action === 'add') {
+
       addToWatchlist(id);
+
+      return;
     }
 
 
+    // =========================
     // PLAY
+    // =========================
+
     if (action === 'play') {
+
+      const dialog = document.querySelector('#player-dialog');
+      const player = document.querySelector('#movie-player');
+
+      if (!dialog || !player) return;
+
+      player.dataset.titleId = id;
+      syncPlayerTitle(id);
+      dialog.showModal();
+
+      const startPlayback = () => {
+        restorePlaybackPosition(player, id);
+        player.play().catch(() => {
+          // The visible native controls remain available if playback is blocked.
+        });
+      };
+
+      if (player.readyState >= 1) {
+        startPlayback();
+      } else {
+        player.addEventListener('loadedmetadata', startPlayback, { once: true });
+      }
+
+      return;
+    }
+
+    if (action === 'toggle-play') {
+      const player = document.querySelector('#movie-player');
+
+      if (!player) return;
+
+      if (player.paused) {
+        player.play().catch(() => {});
+      } else {
+        player.pause();
+      }
+
+      return;
+    }
+
+    if (action === 'toggle-mute') {
+      const player = document.querySelector('#movie-player');
+
+      if (!player) return;
+
+      player.muted = !player.muted;
+      control.textContent = player.muted ? '🔇' : '🔊';
+      control.setAttribute('aria-label', player.muted ? 'Unmute video' : 'Mute video');
+
+      return;
+    }
+
+    if (action === 'toggle-settings') {
+      const settingsMenu = document.querySelector('#player-settings-menu');
+      const captionsMenu = document.querySelector('#player-captions-menu');
+      const captionsButton = document.querySelector('[data-action="captions"]');
+
+      if (!settingsMenu) return;
+
+      settingsMenu.hidden = !settingsMenu.hidden;
+      if (captionsMenu) captionsMenu.hidden = true;
+      captionsButton?.setAttribute('aria-expanded', 'false');
+      control.setAttribute('aria-expanded', String(!settingsMenu.hidden));
+      control.setAttribute(
+        'aria-label',
+        settingsMenu.hidden ? 'Open player settings' : 'Close player settings'
+      );
+
+      return;
+    }
+
+    if (action === 'set-playback-speed') {
+      const player = document.querySelector('#movie-player');
+      const settingsMenu = document.querySelector('#player-settings-menu');
+      const speed = Number(control.dataset.speed);
+
+      if (!player || !Number.isFinite(speed) || speed <= 0) return;
+
+      player.playbackRate = speed;
+      settingsMenu
+        ?.querySelectorAll('[data-action="set-playback-speed"]')
+        .forEach((option) => {
+          option.setAttribute('aria-pressed', String(option === control));
+        });
+      if (settingsMenu) settingsMenu.hidden = true;
+
+      const settingsButton = document.querySelector('[data-action="toggle-settings"]');
+      settingsButton?.setAttribute('aria-expanded', 'false');
+      settingsButton?.setAttribute('aria-label', 'Open player settings');
+
+      return;
+    }
+
+    if (action === 'captions') {
+      const captionsMenu = document.querySelector('#player-captions-menu');
+      const settingsMenu = document.querySelector('#player-settings-menu');
+
+      if (!captionsMenu) return;
+
+      captionsMenu.hidden = !captionsMenu.hidden;
+      if (settingsMenu) settingsMenu.hidden = true;
+      control.setAttribute('aria-expanded', String(!captionsMenu.hidden));
+      control.setAttribute(
+        'aria-label',
+        captionsMenu.hidden ? 'Open captions' : 'Close captions'
+      );
       document
-        .querySelector('#player-dialog')
-        ?.showModal();
+        .querySelector('[data-action="toggle-settings"]')
+        ?.setAttribute('aria-expanded', 'false');
+
+      if (!captionsMenu.hidden) {
+        renderCaptionOptions();
+      }
+
+      return;
+    }
+
+    if (action === 'set-caption-track') {
+      const player = document.querySelector('#movie-player');
+      const selectedTrack = Number(control.dataset.trackIndex);
+
+      if (!player || !Number.isInteger(selectedTrack)) return;
+
+      Array.from(player.textTracks).forEach((track, index) => {
+        track.mode = index === selectedTrack ? 'showing' : 'disabled';
+      });
+      renderCaptionOptions();
+
+      return;
+    }
+
+    if (action === 'toggle-fullscreen') {
+      const playerShell = document.querySelector('.player-shell');
+
+      if (!playerShell) return;
+
+      if (!document.fullscreenElement) {
+        playerShell.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+
+      return;
+    }
+
+    if (action === 'seek-by') {
+      const player = document.querySelector('#movie-player');
+      const offset = Number(control.dataset.seconds);
+
+      if (
+        !player ||
+        !Number.isFinite(offset) ||
+        !Number.isFinite(player.duration)
+      ) {
+        return;
+      }
+
+      const wasPlaying = !player.paused;
+      player.currentTime = Math.max(
+        0,
+        Math.min(player.duration, player.currentTime + offset)
+      );
+      savePlaybackProgress(player.dataset.titleId, player.currentTime);
+
+      if (wasPlaying) {
+        player.play().catch(() => {});
+      }
+
+      return;
     }
 
 
+    // =========================
     // CLOSE PLAYER
+    // =========================
+
     if (action === 'close-player') {
+
+      const player = document.querySelector('#movie-player');
+
+      if (player) {
+        savePlaybackProgress(player.dataset.titleId, player.currentTime);
+        player.pause();
+      }
+
       document
         .querySelector('#player-dialog')
         ?.close();
+
+      renderCurrentPage();
+
+      return;
     }
 
 
-    // REMOVE
+    // =========================
+    // WATCH TRAILER
+    // =========================
+
+    if (action === 'trailer') {
+
+      const trailerDialog =
+        document.querySelector(
+          '#trailer-dialog'
+        );
+
+      const trailerFrame =
+        document.querySelector(
+          '#trailer-frame'
+        );
+
+
+      if (
+        !trailerDialog ||
+        !trailerFrame
+      ) {
+        return;
+      }
+
+
+      const trailer =
+        control.dataset.trailer;
+
+
+      if (!trailer) {
+
+        notify(
+          'Trailer is not available for this title.'
+        );
+
+        return;
+      }
+
+
+      trailerFrame.src =
+        `${trailer}?autoplay=1`;
+
+
+      trailerDialog.showModal();
+
+      return;
+    }
+
+
+    // =========================
+    // CLOSE TRAILER
+    // =========================
+
+    if (action === 'close-trailer') {
+
+      const trailerDialog =
+        document.querySelector(
+          '#trailer-dialog'
+        );
+
+      const trailerFrame =
+        document.querySelector(
+          '#trailer-frame'
+        );
+
+
+      if (trailerFrame) {
+
+        trailerFrame.src = '';
+      }
+
+
+      trailerDialog?.close();
+
+      return;
+    }
+
+
+    // =========================
+    // REMOVE FROM MY LIST
+    // =========================
+
     if (action === 'remove') {
 
       const remaining =
@@ -1260,7 +1717,10 @@ document.addEventListener(
           (item) => item.id !== id
         );
 
-      if (writeWatchlist(remaining)) {
+
+      if (
+        writeWatchlist(remaining)
+      ) {
 
         notify(
           'Removed from My List.'
@@ -1268,11 +1728,150 @@ document.addEventListener(
 
         renderCurrentPage();
       }
+
+      return;
     }
 
   }
 );
 
+const formatPlaybackTime = (seconds) => {
+  if (!Number.isFinite(seconds) || seconds < 0) return '00:00:00';
+
+  const totalSeconds = Math.floor(seconds);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const secs = totalSeconds % 60;
+
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+};
+
+function renderCaptionOptions() {
+  const player = document.querySelector('#movie-player');
+  const options = document.querySelector('.player-caption-options');
+  const emptyMessage = document.querySelector('.player-caption-empty');
+
+  if (!player || !options || !emptyMessage) return;
+
+  const tracks = Array.from(player.textTracks).flatMap(
+    (track, index) =>
+      track.kind === 'captions' || track.kind === 'subtitles'
+        ? [{ track, index }]
+        : []
+  );
+  const activeTrack =
+    tracks.find(({ track }) => track.mode === 'showing')?.index ?? -1;
+  options.replaceChildren();
+  emptyMessage.hidden = tracks.length > 0;
+
+  const addOption = (label, trackIndex, selected) => {
+    const option = document.createElement('button');
+    option.type = 'button';
+    option.dataset.action = 'set-caption-track';
+    option.dataset.trackIndex = String(trackIndex);
+    option.textContent = label;
+    option.setAttribute('aria-pressed', String(selected));
+    options.append(option);
+  };
+
+  addOption('Off', -1, activeTrack === -1);
+  tracks.forEach(({ track, index }) => {
+    const label = track.label || track.language || `Caption ${index + 1}`;
+    addOption(label, index, index === activeTrack);
+  });
+}
+
+const syncPlayerTitle = (titleId) => {
+  const titleNode = document.querySelector('.player-show');
+
+  if (!titleNode) return;
+
+  const item = byId(titleId);
+
+  if (!item) return;
+
+  if (titleNode) {
+    titleNode.textContent = item.title;
+  }
+};
+
+const syncPlayerDisplay = () => {
+  const moviePlayer = document.querySelector('#movie-player');
+  const progressMeter = document.querySelector('.player-progress-meter');
+  const timeDisplay = document.querySelector('#movie-player-time');
+  const toggleButton = document.querySelector('[data-action="toggle-play"]');
+
+  if (!moviePlayer) return;
+
+  if (progressMeter && Number.isFinite(moviePlayer.duration) && moviePlayer.duration > 0) {
+    const ratio = Math.min(Math.max(moviePlayer.currentTime / moviePlayer.duration, 0), 1);
+    progressMeter.style.width = `${ratio * 100}%`;
+  }
+
+  if (timeDisplay) {
+    const current = formatPlaybackTime(moviePlayer.currentTime);
+    const total = formatPlaybackTime(moviePlayer.duration || 0);
+    timeDisplay.textContent = `${current} / ${total}`;
+  }
+
+  if (toggleButton) {
+    toggleButton.textContent = moviePlayer.paused ? '▶' : '❚❚';
+    toggleButton.setAttribute('aria-label', moviePlayer.paused ? 'Play video' : 'Pause video');
+  }
+};
+
+const moviePlayer = document.querySelector('#movie-player');
+
+if (moviePlayer) {
+  moviePlayer.playbackRate = 1;
+
+  moviePlayer.addEventListener('timeupdate', () => {
+    if (!moviePlayer.seeking) {
+      savePlaybackProgress(moviePlayer.dataset.titleId, moviePlayer.currentTime);
+    }
+
+    syncPlayerDisplay();
+  });
+
+  moviePlayer.addEventListener('pause', () => {
+    if (!moviePlayer.seeking) {
+      savePlaybackProgress(moviePlayer.dataset.titleId, moviePlayer.currentTime);
+    }
+
+    syncPlayerDisplay();
+  });
+
+  moviePlayer.addEventListener('play', syncPlayerDisplay);
+  moviePlayer.addEventListener('loadedmetadata', syncPlayerDisplay);
+
+  moviePlayer.addEventListener('seeked', () => {
+    savePlaybackProgress(moviePlayer.dataset.titleId, moviePlayer.currentTime);
+    syncPlayerDisplay();
+  });
+
+  moviePlayer.addEventListener('ended', () => {
+    const progress = readPlaybackProgress();
+    delete progress[moviePlayer.dataset.titleId];
+
+    try {
+      localStorage.setItem(PLAYBACK_KEY, JSON.stringify(progress));
+    } catch {
+      // The finished video remains playable if storage is unavailable.
+    }
+
+    syncPlayerDisplay();
+  });
+}
+
+document.addEventListener('fullscreenchange', () => {
+  const fullButton = document.querySelector('[data-action="toggle-fullscreen"]');
+
+  if (!fullButton) return;
+
+  const isFull = Boolean(document.fullscreenElement);
+  fullButton.textContent = isFull ? '⤢' : '⤢';
+  fullButton.setAttribute('aria-label', isFull ? 'Exit fullscreen' : 'Enter fullscreen');
+});
 
 // =========================
 // WATCHLIST STATUS UPDATE
@@ -1287,7 +1886,9 @@ document.addEventListener(
         '[data-action="status"]'
       );
 
+
     if (!control) return;
+
 
     const updated =
       readWatchlist().map(
@@ -1300,7 +1901,10 @@ document.addEventListener(
             : item
       );
 
-    if (writeWatchlist(updated)) {
+
+    if (
+      writeWatchlist(updated)
+    ) {
 
       notify(
         'Viewing status updated.'
@@ -1308,6 +1912,7 @@ document.addEventListener(
 
       renderCurrentPage();
     }
+
   }
 );
 

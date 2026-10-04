@@ -1,23 +1,61 @@
-const USERS_KEY = "streamflix-users";
+﻿const USERS_KEY = "streamflix-users";
 const CURRENT_USER_KEY = "streamflix-current-user";
+const PASSWORD_ITERATIONS = 120000;
 
 function getUsers() {
-    return JSON.parse(localStorage.getItem(USERS_KEY)) || [];
+    try {
+        const users = JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
+        return Array.isArray(users) ? users : [];
+    } catch {
+        return [];
+    }
 }
 
 function saveUsers(users) {
-    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+    try {
+        localStorage.setItem(USERS_KEY, JSON.stringify(users));
+        return true;
+    } catch {
+        return false;
+    }
 }
 
+function supportsSecureStorage() {
+    return Boolean(window.crypto?.subtle && window.crypto?.getRandomValues);
+}
 
-// =========================
-// SIGN UP
-// =========================
+function createSalt() {
+    const bytes = new Uint8Array(16);
+    window.crypto.getRandomValues(bytes);
+    return Array.from(bytes, byte => byte.toString(16).padStart(2, "0")).join("");
+}
+
+async function hashPassword(password, salt) {
+    const encoder = new TextEncoder();
+    const key = await window.crypto.subtle.importKey(
+        "raw",
+        encoder.encode(password),
+        "PBKDF2",
+        false,
+        ["deriveBits"]
+    );
+    const bits = await window.crypto.subtle.deriveBits(
+        { name: "PBKDF2", salt: encoder.encode(salt), iterations: PASSWORD_ITERATIONS, hash: "SHA-256" },
+        key,
+        256
+    );
+    return Array.from(new Uint8Array(bits), byte => byte.toString(16).padStart(2, "0")).join("");
+}
+
+function showMessage(element, text, isError = true) {
+    element.textContent = text;
+    element.classList.toggle("is-success", !isError);
+}
 
 const signupForm = document.getElementById("signup-form");
 
 if (signupForm) {
-    signupForm.addEventListener("submit", function (event) {
+    signupForm.addEventListener("submit", async event => {
         event.preventDefault();
 
         const name = document.getElementById("signup-name").value.trim();
@@ -27,78 +65,107 @@ if (signupForm) {
         const message = document.getElementById("signup-message");
 
         if (password !== confirmPassword) {
-            message.textContent = "Passwords do not match.";
+            showMessage(message, "Passwords do not match.");
             return;
         }
 
         const users = getUsers();
-
-        const existingUser = users.find(user => user.email === email);
-
-        if (existingUser) {
-            message.textContent = "An account with this email already exists.";
+        if (users.some(user => user.email === email)) {
+            showMessage(message, "An account with this email already exists.");
             return;
         }
 
-        const newUser = {
-            id: Date.now(),
-            name: name,
-            email: email,
-            password: password
-        };
+        if (!supportsSecureStorage()) {
+            showMessage(message, "Secure account storage requires localhost or HTTPS.");
+            return;
+        }
 
-        users.push(newUser);
-        saveUsers(users);
+        const salt = createSalt();
+        try {
+            users.push({
+                id: Date.now(),
+                name,
+                email,
+                salt,
+                passwordHash: await hashPassword(password, salt),
+                passwordAlgorithm: "PBKDF2-SHA-256",
+                passwordIterations: PASSWORD_ITERATIONS
+            });
+        } catch {
+            showMessage(message, "Your browser could not create a secure password record.");
+            return;
+        }
 
-        message.textContent = "Account created successfully!";
+        if (!saveUsers(users)) {
+            showMessage(message, "Your browser could not save this account.");
+            return;
+        }
 
+        showMessage(message, "Account created successfully!", false);
         signupForm.reset();
-
-        setTimeout(() => {
-            window.location.href = "./login.html";
-        }, 1000);
+        window.setTimeout(() => { window.location.href = "./login.html"; }, 1000);
     });
 }
-
-
-// =========================
-// LOGIN
-// =========================
 
 const loginForm = document.getElementById("login-form");
 
 if (loginForm) {
-    loginForm.addEventListener("submit", function (event) {
+    loginForm.addEventListener("submit", async event => {
         event.preventDefault();
 
         const email = document.getElementById("login-email").value.trim().toLowerCase();
         const password = document.getElementById("login-password").value;
         const message = document.getElementById("login-message");
-
         const users = getUsers();
-
-        const user = users.find(
-            user => user.email === email && user.password === password
-        );
+        const user = users.find(entry => entry.email === email);
 
         if (!user) {
-            message.textContent = "Invalid email or password.";
+            showMessage(message, "Invalid email or password.");
             return;
         }
 
-        localStorage.setItem(
-            CURRENT_USER_KEY,
-            JSON.stringify({
+        if (!supportsSecureStorage()) {
+            showMessage(message, "Secure sign in requires localhost or HTTPS.");
+            return;
+        }
+
+        try {
+            let matches = false;
+            if (user.passwordAlgorithm === "PBKDF2-SHA-256" && user.passwordIterations) {
+                matches = await hashPassword(password, user.salt) === user.passwordHash;
+            } else if (user.password) {
+                // Upgrade older demo accounts that stored a plain-text password.
+                matches = user.password === password;
+                if (matches) {
+                    const salt = createSalt();
+                    user.salt = salt;
+                    user.passwordHash = await hashPassword(password, salt);
+                    user.passwordAlgorithm = "PBKDF2-SHA-256";
+                    user.passwordIterations = PASSWORD_ITERATIONS;
+                    delete user.password;
+                    if (!saveUsers(users)) {
+                        showMessage(message, "Password verified, but your browser could not update the account.");
+                        return;
+                    }
+                }
+            }
+
+            if (!matches) {
+                showMessage(message, "Invalid email or password.");
+                return;
+            }
+
+            localStorage.setItem(CURRENT_USER_KEY, JSON.stringify({
                 id: user.id,
                 name: user.name,
                 email: user.email
-            })
-        );
+            }));
+        } catch {
+            showMessage(message, "Your browser could not complete sign in. Please try again.");
+            return;
+        }
 
-        message.textContent = "Login successful!";
-
-        setTimeout(() => {
-            window.location.href = "./index.html";
-        }, 700);
+        showMessage(message, "Login successful!", false);
+        window.setTimeout(() => { window.location.href = "./index.html"; }, 700);
     });
 }
