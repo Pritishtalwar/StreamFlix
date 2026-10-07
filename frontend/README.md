@@ -4,14 +4,14 @@
 
 ### Description
 
-StreamFlix is a responsive movie and series discovery website. Visitors can browse a curated catalog, search and filter titles, open a detail page, play a demo video, resume it where they left off, view available trailers, and maintain a personal watchlist saved in their browser.
+StreamFlix is a responsive movie and series discovery website. Visitors can browse a curated catalog, search TMDB for movies, filter titles, open a detail page, play a demo video, resume it where they left off, view available trailers, and maintain a personal watchlist saved in their browser.
 
 ### Goals
 
 - Demonstrate semantic HTML, responsive CSS, and browser-native JavaScript.
 - Provide more than two connected pages and working navigation.
 - Implement complete watchlist CRUD using Web Storage.
-- Keep the project easy to run without a package install, build step, API key, or JavaScript library.
+- Keep the project easy to run without a package install, build step, or JavaScript library.
 
 ### Specifications
 
@@ -19,7 +19,7 @@ StreamFlix is a responsive movie and series discovery website. Visitors can brow
 | --- | --- |
 | Technology | HTML5, CSS3, and plain JavaScript (ES6+) |
 | Pages | Home, Movies, Series, title details, and My List |
-| Browse | Search titles by name, genre, or year; filter by genre |
+| Browse | Search TMDB movie titles by name; filter curated titles by genre |
 | Watchlist create | Add a movie or series from a card or its details page |
 | Watchlist read | View saved titles and planned/watched counts |
 | Watchlist update | Change a saved title between Planned and Watched |
@@ -27,7 +27,7 @@ StreamFlix is a responsive movie and series discovery website. Visitors can brow
 | Playback | Seek on the video timeline, jump backward or forward by 10 seconds, and resume from the saved position |
 | Persistence | `localStorage` on the current browser and device |
 | Responsive design | Layouts adapt to phone, tablet, and desktop widths |
-| External dependencies | No JavaScript libraries, frameworks, catalog API, or API keys; artwork and trailers use external services |
+| External dependencies | No JavaScript libraries or frameworks; movie search uses TMDB through a server-side API proxy |
 
 Watchlist records use this data shape:
 
@@ -38,7 +38,7 @@ Watchlist records use this data shape:
 }
 ```
 
-The catalog is sample data stored in `app.js`. Poster and backdrop artwork is loaded from TMDB's image CDN, and available trailers open from YouTube. Browsing and watchlist operations do not depend on a catalog API. A network connection is needed for this media; images have a local fallback.
+The home page and series list use sample data stored in `app.js`. Movie title searches use TMDB; the API key stays on the Node server and is never sent to browser JavaScript. Poster and backdrop artwork is loaded from TMDB's image CDN, and available trailers open from YouTube. A network connection is needed for TMDB search and external media; images have a local fallback. Without a configured TMDB key, the curated catalog remains available but API search is disabled.
 
 ### Design
 
@@ -54,22 +54,29 @@ The visual direction is a quiet, cinematic catalog: near-black surfaces, warm of
 
 ### Acceptance Criteria
 
-- All pages open and navigate with a static file server.
-- Search and genre filters update the visible catalog without a page reload.
+- Pages are served by the included Node server, which also proxies TMDB search and movie-detail requests.
+- TMDB movie search and curated genre filters update the visible catalog without a page reload.
 - Adding a title creates a watchlist record; saved records remain after reload.
 - The status selector updates a record, and Remove deletes it.
 - The layout remains usable at phone, tablet, and desktop widths.
-- The project runs without `npm install`, a catalog API key, or a third-party JavaScript library.
+- The project runs without `npm install` or a third-party JavaScript library; a TMDB API key is required for live movie search.
 
 ## Run Locally
 
-From the repository root, start Python's built-in static server:
+Use Node.js 18.17 or newer. Get a TMDB API key (v3) from your TMDB account, then create a local `.env` file and add the key:
 
 ```powershell
-py -m http.server 4173 --directory frontend
+Copy-Item .env.example .env
+notepad .env
 ```
 
-Then open <http://localhost:4173>. If `py` is unavailable, use `python -m http.server 4173 --directory frontend` instead. No package installation or build command is required. Poster artwork and trailer playback need an internet connection; the catalog and watchlist logic run locally. You can also run the server from `frontend/` without the `--directory frontend` option.
+Replace the example value with your actual key. Keep `.env` private; it is excluded from Git. Start the app from the repository root:
+
+```powershell
+node server.js
+```
+
+Then open <http://localhost:4173>. No package installation or build command is required. Search uses the first TMDB results page; artwork and trailer playback also need an internet connection.
 
 ## Project Deliverables
 
@@ -83,9 +90,10 @@ This project is available under the MIT License. See [LICENSE](LICENSE).
 
 ## Files
 
-- `app.js` contains the sample catalog, rendering, search/filter behavior, and watchlist storage operations.
+- `app.js` contains the sample catalog, TMDB search UI, rendering, and watchlist storage operations.
 - `styles.css` contains the visual system and responsive layouts.
 - The root HTML files provide the individual pages.
+- `../server.js` serves the frontend and keeps the TMDB API key on the server.
 - `public/` contains the favicon and local sample video.
 - `src/assets/hero-background.jpg` is the locally stored home-page hero image.
 - `auth.js` provides a frontend-only demo account flow. Passwords are salted and hashed with Web Crypto; this does not make browser-only authentication suitable for production.

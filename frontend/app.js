@@ -2,6 +2,28 @@ const STORAGE_KEY = 'streamflix-watchlist';
 const PLAYBACK_KEY = 'streamflix-playback-progress';
 
 const imageRoot = 'https://image.tmdb.org/t/p/';
+const discoveredMovies = new Map();
+const tmdbGenres = {
+  28: 'Action',
+  12: 'Adventure',
+  16: 'Animation',
+  35: 'Comedy',
+  80: 'Crime',
+  99: 'Documentary',
+  18: 'Drama',
+  10751: 'Family',
+  14: 'Fantasy',
+  36: 'History',
+  27: 'Horror',
+  10402: 'Music',
+  9648: 'Mystery',
+  10749: 'Romance',
+  878: 'Sci-Fi',
+  10770: 'TV Movie',
+  53: 'Thriller',
+  10752: 'War',
+  37: 'Western'
+};
 
 const catalog = [
   {
@@ -161,6 +183,37 @@ const catalog = [
 
 const byId = (id) => catalog.find((item) => item.id === id);
 
+function movieFromTmdb(movie) {
+  if (!movie || !Number.isInteger(movie.id) || !movie.title) return null;
+
+  const genres = Array.isArray(movie.genres)
+    ? movie.genres.map((genre) => genre.name).filter(Boolean)
+    : (movie.genre_ids || [])
+        .map((id) => tmdbGenres[id])
+        .filter(Boolean);
+  const runtimeMinutes = Number(movie.runtime);
+  const runtime = Number.isFinite(runtimeMinutes) && runtimeMinutes > 0
+    ? `${Math.floor(runtimeMinutes / 60)}h ${String(runtimeMinutes % 60).padStart(2, '0')}m`
+    : 'Feature film';
+
+  return {
+    id: `tmdb-${movie.id}`,
+    tmdbId: movie.id,
+    title: movie.title,
+    year: String(movie.release_date || '').slice(0, 4) || '—',
+    rating: Number(movie.vote_average || 0).toFixed(1),
+    runtime,
+    genre: genres.join(', ') || 'Movie',
+    genreIds:
+      movie.genre_ids ||
+      (movie.genres || []).map((genre) => genre.id).filter(Number.isInteger),
+    type: 'Movie',
+    description: movie.overview || 'No synopsis is available for this title.',
+    poster: movie.poster_path || 'local:hero',
+    backdrop: movie.backdrop_path || movie.poster_path || 'local:hero'
+  };
+}
+
 const trailerMap = {
   'interstellar': 'https://www.youtube.com/embed/zSWdZVtXT7E',
   'dune-part-two': 'https://www.youtube.com/embed/Way9Dexny3w',
@@ -188,12 +241,12 @@ const escapeHtml = (value) =>
   );
 
 const posterUrl = (item, size = 'w500') =>
-  item.poster.startsWith('local:')
+  !item.poster || item.poster.startsWith('local:')
     ? './src/assets/hero-background.jpg'
     : `${imageRoot}${size}${item.poster}`;
 
 const backdropUrl = (item) =>
-  item.backdrop.startsWith('local:')
+  !item.backdrop || item.backdrop.startsWith('local:')
     ? './src/assets/hero-background.jpg'
     : `${imageRoot}w1280${item.backdrop}`;
 
@@ -210,15 +263,26 @@ function readWatchlist() {
 
     if (!Array.isArray(saved)) return [];
 
-    return saved
-      .filter((entry) => entry && byId(entry.id))
-      .map((entry) => ({
+    return saved.flatMap((entry) => {
+      if (!entry || typeof entry.id !== 'string') return [];
+
+      const knownItem = byId(entry.id);
+      const storedItem = entry.item;
+      const hasStoredMovie =
+        /^tmdb-\d+$/.test(entry.id) &&
+        storedItem &&
+        storedItem.id === entry.id &&
+        typeof storedItem.title === 'string' &&
+        typeof storedItem.poster === 'string';
+
+      if (!knownItem && !hasStoredMovie) return [];
+
+      return [{
         id: entry.id,
-        status:
-          entry.status === 'watched'
-            ? 'watched'
-            : 'planned'
-      }));
+        status: entry.status === 'watched' ? 'watched' : 'planned',
+        ...(knownItem ? {} : { item: storedItem })
+      }];
+    });
   } catch {
     return [];
   }
@@ -315,6 +379,13 @@ function notify(message) {
 // =========================
 
 function addToWatchlist(id) {
+  const item = byId(id) || discoveredMovies.get(id);
+
+  if (!item) {
+    notify('This title could not be added. Open it again from search and retry.');
+    return;
+  }
+
   const items = readWatchlist();
 
   if (items.some((item) => item.id === id)) {
@@ -327,7 +398,8 @@ function addToWatchlist(id) {
       ...items,
       {
         id,
-        status: 'planned'
+        status: 'planned',
+        ...(byId(id) ? {} : { item })
       }
     ])
   ) {
@@ -729,7 +801,7 @@ function renderCatalog(type) {
           <input
             id="catalog-search"
             type="search"
-            placeholder="Search by title or genre"
+            placeholder="${type === 'Movie' ? 'Search any movie title' : 'Search by title or genre'}"
             autocomplete="off"
             aria-label="Search titles"
           />
@@ -816,33 +888,103 @@ function renderCatalog(type) {
     document.querySelector('#catalog-count');
 
 
-  function updateCatalog() {
-    const query =
-      input.value
-        .trim()
-        .toLocaleLowerCase();
+  let searchController;
+  let searchRequest = 0;
+
+  async function updateCatalog() {
+    const rawQuery = input.value.trim();
+    const query = rawQuery.toLocaleLowerCase();
+
+    if (type === 'Movie' && rawQuery) {
+      const requestId = ++searchRequest;
+      searchController?.abort();
+
+      if (rawQuery.length < 2) {
+        count.textContent = 'Enter at least 2 characters to search TMDB.';
+        grid.innerHTML = renderGrid(
+          [],
+          'Keep typing',
+          'Search movie titles from the TMDB catalog.'
+        );
+        return;
+      }
+
+      searchController = new AbortController();
+      count.textContent = 'Searching movies…';
+      grid.innerHTML = renderGrid(
+        [],
+        'Searching TMDB…',
+        'Loading matching movie titles.'
+      );
+
+      try {
+        const response = await fetch(
+          `/api/movies/search?q=${encodeURIComponent(rawQuery)}`,
+          { signal: searchController.signal }
+        );
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Movie search failed.');
+        }
+
+        if (requestId !== searchRequest) return;
+
+        const results = (Array.isArray(data.results) ? data.results : [])
+          .map(movieFromTmdb)
+          .filter(Boolean);
+
+        results.forEach((movie) => discoveredMovies.set(movie.id, movie));
+
+        const activeGenreId = Object.entries(tmdbGenres).find(
+          ([, genre]) => genre === activeGenre
+        )?.[0];
+        const filtered = results.filter(
+          (movie) =>
+            activeGenre === 'all' ||
+            movie.genreIds.includes(Number(activeGenreId))
+        );
+
+        grid.innerHTML = renderGrid(
+          filtered,
+          'No matching movies',
+          'Try another title or genre.'
+        );
+        count.textContent = `Found ${filtered.length} ${filtered.length === 1 ? 'movie' : 'movies'} on TMDB.`;
+      } catch (error) {
+        if (error.name === 'AbortError' || requestId !== searchRequest) return;
+
+        count.textContent = 'TMDB search is unavailable.';
+        grid.innerHTML = renderGrid(
+          [],
+          'Couldn’t search movies',
+          escapeHtml(error.message || 'Check the server settings and try again.')
+        );
+      }
+
+      return;
+    }
+
+    searchRequest += 1;
+    searchController?.abort();
 
     const filtered = items.filter(
       (item) =>
-        (activeGenre === 'all' ||
-          item.genre === activeGenre) &&
+        (activeGenre === 'all' || item.genre === activeGenre) &&
         `${item.title} ${item.genre} ${item.year}`
           .toLocaleLowerCase()
           .includes(query)
     );
 
-    grid.innerHTML =
-      renderGrid(filtered);
-
-    count.textContent =
-      `Showing ${filtered.length} of ${items.length} titles`;
+    grid.innerHTML = renderGrid(filtered);
+    count.textContent = `Showing ${filtered.length} of ${items.length} titles`;
   }
 
-
-  input.addEventListener(
-    'input',
-    updateCatalog
-  );
+  let searchTimer;
+  input.addEventListener('input', () => {
+    window.clearTimeout(searchTimer);
+    searchTimer = window.setTimeout(() => void updateCatalog(), 250);
+  });
 
 
   document
@@ -882,15 +1024,43 @@ function renderCatalog(type) {
 // MOVIE DETAILS
 // =========================
 
-function renderDetails() {
-  const item = byId(
-    new URLSearchParams(
-      window.location.search
-    ).get('id')
-  );
-
+async function renderDetails() {
+  const titleId = new URLSearchParams(window.location.search).get('id');
   const app =
     document.querySelector('#app');
+  let item = byId(titleId);
+
+  if (!item && /^tmdb-\d+$/.test(titleId || '')) {
+    const tmdbId = titleId.slice('tmdb-'.length);
+    app.innerHTML = `
+      <section class="page-content">
+        <p class="catalog-count">Loading movie details…</p>
+      </section>
+    `;
+
+    try {
+      const response = await fetch(`/api/movies/${tmdbId}`);
+      const details = await response.json();
+
+      if (!response.ok) {
+        throw new Error(details.error || 'Could not load movie details.');
+      }
+
+      item = movieFromTmdb(details);
+      if (item) discoveredMovies.set(item.id, item);
+    } catch (error) {
+      app.innerHTML = `
+        <section class="page-content">
+          <div class="empty-state">
+            <h2>Couldn’t load this movie.</h2>
+            <p>${escapeHtml(error.message || 'Check the server settings and try again.')}</p>
+            <a class="button button-primary" href="movies.html">Back to movies</a>
+          </div>
+        </section>
+      `;
+      return;
+    }
+  }
 
 
   if (!item) {
@@ -1096,7 +1266,7 @@ function renderMyList() {
 
   const items = saved.map(
     (entry) => ({
-      ...byId(entry.id),
+      ...(byId(entry.id) || entry.item),
       status: entry.status
     })
   );
@@ -1184,7 +1354,7 @@ function renderMyList() {
                         <h2 class="saved-title">
 
                           <a
-                            href="movie.html?id=${item.id}"
+                            href="movie.html?id=${encodeURIComponent(item.id)}"
                           >
                             ${escapeHtml(item.title)}
                           </a>
@@ -1786,7 +1956,7 @@ const syncPlayerTitle = (titleId) => {
 
   if (!titleNode) return;
 
-  const item = byId(titleId);
+  const item = byId(titleId) || discoveredMovies.get(titleId);
 
   if (!item) return;
 
