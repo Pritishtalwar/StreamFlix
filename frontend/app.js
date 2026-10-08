@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'streamflix-watchlist';
+﻿const STORAGE_KEY = 'streamflix-watchlist';
 const PLAYBACK_KEY = 'streamflix-playback-progress';
 
 const imageRoot = 'https://image.tmdb.org/t/p/';
@@ -197,10 +197,6 @@ const backdropUrl = (item) =>
     : `${imageRoot}w1280${item.backdrop}`;
 
 
-// =========================
-// WATCHLIST
-// =========================
-
 function readWatchlist() {
   try {
     const saved = JSON.parse(
@@ -285,10 +281,6 @@ function restorePlaybackPosition(video, id) {
   return Promise.resolve();
 }
 
-// =========================
-// NOTIFICATION
-// =========================
-
 function notify(message) {
   const toast = document.querySelector('#toast');
 
@@ -305,10 +297,6 @@ function notify(message) {
   );
 }
 
-
-// =========================
-// ADD TO WATCHLIST
-// =========================
 
 function addToWatchlist(id) {
   const item = byId(id);
@@ -339,10 +327,6 @@ function addToWatchlist(id) {
   }
 }
 
-
-// =========================
-// HEADER
-// =========================
 
 function renderHeader() {
   const currentPage =
@@ -444,10 +428,6 @@ function renderHeader() {
 }
 
 
-// =========================
-// MOVIE CARD
-// =========================
-
 function cardMarkup(item) {
   return `
     <article class="movie-card">
@@ -501,10 +481,6 @@ function cardMarkup(item) {
 }
 
 
-// =========================
-// GRID
-// =========================
-
 function renderGrid(
   items,
   emptyTitle = 'No titles found',
@@ -521,10 +497,6 @@ function renderGrid(
 
   return items.map(cardMarkup).join('');
 }
-
-// =========================
-// SECTION
-// =========================
 
 function sectionMarkup(
   title,
@@ -555,10 +527,6 @@ function sectionMarkup(
   `;
 }
 
-
-// =========================
-// HOME
-// =========================
 
 function renderHome() {
   const featured = byId('last-adventure');
@@ -657,10 +625,6 @@ function renderHome() {
   `;
 }
 
-
-// =========================
-// MOVIES / SERIES
-// =========================
 
 function renderCatalog(type) {
   const heading =
@@ -873,444 +837,126 @@ function renderCatalog(type) {
 }
 
 
-// =========================
-// MOVIE DETAILS
-// =========================
-
 function renderDetails() {
   const titleId = new URLSearchParams(window.location.search).get('id');
-  const app =
-    document.querySelector('#app');
-  let item = byId(titleId);
+  const app = document.querySelector('#app');
+  const item = byId(titleId);
 
   if (!item) {
-
     app.innerHTML = `
       <section class="page-content">
-
         <div class="empty-state">
-
-          <h2>
-            We couldn’t find that title.
-          </h2>
-
-          <p>
-            It may have moved out of the collection.
-          </p>
-
-          <a
-            class="button button-primary"
-            href="movies.html"
-          >
-            Browse titles
-          </a>
-
+          <h2>We couldn’t find that title.</h2>
+          <p>It may have moved out of the collection.</p>
+          <a class="button button-primary" href="movies.html">Browse titles</a>
         </div>
-
       </section>
     `;
-
     return;
   }
 
-
-  document.title =
-    `${item.title} | StreamFlix`;
-
+  document.title = `${item.title} | StreamFlix`;
   const savedPosition = Number(readPlaybackProgress()[item.id]) || 0;
-
+  const returnPage = item.type === 'Series' ? 'series.html' : 'movies.html';
+  const trailer = trailerUrl(item);
 
   app.innerHTML = `
-
-    <section
-      class="details-hero"
-      style="background-image:url('${backdropUrl(item)}')"
-    >
-
+    <section class="details-hero" style="background-image:url('${backdropUrl(item)}')">
       <div class="details-inner">
-
-
-        <img
-          class="detail-poster"
-          src="${posterUrl(item)}"
-          alt="${escapeHtml(item.title)} poster"
-          onerror="this.hidden=true"
-        />
-
-
+        <img class="detail-poster" src="${posterUrl(item)}" alt="${escapeHtml(item.title)} poster" onerror="this.hidden=true" />
         <div class="detail-copy">
-
-
-          <a
-            class="back-link"
-            href="${
-              item.type === 'Series'
-                ? 'series.html'
-                : 'movies.html'
-            }"
-          >
-            ← Back to ${
-              item.type === 'Series'
-                ? 'series'
-                : 'movies'
-            }
-          </a>
-
-
-          <p class="eyebrow">
-
-            ${escapeHtml(item.type)}
-
-            ·
-
-            ${escapeHtml(item.genre)}
-
-          </p>
-
-
-          <h1>
-            ${escapeHtml(item.title)}
-          </h1>
-
-
+          <a class="back-link" href="${returnPage}">← Back to ${item.type === 'Series' ? 'series' : 'movies'}</a>
+          <p class="eyebrow">${escapeHtml(item.type)} · ${escapeHtml(item.genre)}</p>
+          <h1>${escapeHtml(item.title)}</h1>
           <div class="detail-facts">
-
-            <strong>
-              ★ ${escapeHtml(item.rating)}
-            </strong>
-
-            <span>
-              ${item.year}
-            </span>
-
-            <span>
-              ${escapeHtml(item.runtime)}
-            </span>
-
-            <span>
-              HD
-            </span>
-
+            <strong>★ ${escapeHtml(item.rating)}</strong>
+            <span>${item.year}</span>
+            <span>${escapeHtml(item.runtime)}</span>
+            <span>HD</span>
           </div>
-
-
           <div class="genre-tags">
-
-            <span>
-              ${escapeHtml(item.genre)}
-            </span>
-
-            <span>
-              ${escapeHtml(item.type)}
-            </span>
-
-            <span>
-              English
-            </span>
-
+            <span>${escapeHtml(item.genre)}</span>
+            <span>${escapeHtml(item.type)}</span>
+            <span>English</span>
           </div>
-
-
-          <p class="detail-description">
-            ${escapeHtml(item.description)}
-          </p>
-
-
+          <p class="detail-description">${escapeHtml(item.description)}</p>
           <div class="detail-actions">
-
-            <button
-              class="button button-primary"
-              type="button"
-              data-action="play"
-              data-id="${item.id}"
-            >
+            <button class="button button-primary" type="button" data-action="play" data-id="${item.id}">
               ${savedPosition > 0 ? '▶ Continue Watching' : '▶ Watch Now'}
             </button>
-
-            <button
-              class="button button-quiet"
-              type="button"
-              data-action="trailer"
-              data-trailer="${trailerUrl(item) || ''}"
-            >
-              ▶ Watch Trailer
-            </button>
-
-
-            <button
-              class="button button-quiet"
-              type="button"
-              data-action="add"
-              data-id="${item.id}"
-            >
-              + Add to My List
-            </button>
-
+            <button class="button button-quiet" type="button" data-action="trailer" data-trailer="${trailer || ''}">▶ Watch Trailer</button>
+            <button class="button button-quiet" type="button" data-action="add" data-id="${item.id}">+ Add to My List</button>
           </div>
-
-
-          <p class="detail-note">
-            ${trailerUrl(item) ? 'Watch the official trailer before adding this title to your list.' : 'No trailer is available for this title yet.'}
-          </p>
-
-
+          <p class="detail-note">${trailer ? 'Watch the official trailer before adding this title to your list.' : 'No trailer is available for this title yet.'}</p>
         </div>
-
       </div>
-
     </section>
-
-
     <footer class="site-footer">
-
-      <span>
-        <strong>StreamFlix</strong>
-        · Your next story starts here.
-      </span>
-
-      <span>
-        Built with HTML, CSS, JavaScript, and browser storage.
-      </span>
-
+      <span><strong>StreamFlix</strong> · Your next story starts here.</span>
+      <span>Built with HTML, CSS, JavaScript, and browser storage.</span>
     </footer>
   `;
 }
-
-
-// =========================
-// MY LIST
-// =========================
 
 function renderMyList() {
-  const saved = readWatchlist();
+  const app = document.querySelector('#app');
+  const items = readWatchlist()
+    .map((entry) => ({ ...byId(entry.id), status: entry.status }))
+    .filter((item) => item.id);
+  const watchedCount = items.filter((item) => item.status === 'watched').length;
+  const plannedCount = items.length - watchedCount;
 
-  const items = saved.map(
-    (entry) => ({
-      ...(byId(entry.id) || entry.item),
-      status: entry.status
-    })
-  );
-
-
-  const watchedCount =
-    items.filter(
-      (item) => item.status === 'watched'
-    ).length;
-
-
-  const plannedCount =
-    items.length - watchedCount;
-
-
-  const app =
-    document.querySelector('#app');
-
+  const listContent = items.length
+    ? `
+      <div class="saved-list">
+        ${items.map((item) => `
+          <article class="saved-item">
+            <img class="saved-poster" src="${posterUrl(item, 'w185')}" alt="${escapeHtml(item.title)} poster" onerror="this.hidden=true" />
+            <div>
+              <h2 class="saved-title"><a href="movie.html?id=${encodeURIComponent(item.id)}">${escapeHtml(item.title)}</a></h2>
+              <p class="saved-meta">${item.year} · ${escapeHtml(item.genre)} · ★ ${escapeHtml(item.rating)}</p>
+            </div>
+            <div class="saved-actions">
+              <label class="sr-only" for="status-${item.id}">Viewing status for ${escapeHtml(item.title)}</label>
+              <select class="status-select" id="status-${item.id}" data-action="status" data-id="${item.id}">
+                <option value="planned" ${item.status === 'planned' ? 'selected' : ''}>Planned</option>
+                <option value="watched" ${item.status === 'watched' ? 'selected' : ''}>Watched</option>
+              </select>
+              <button class="button button-danger button-small" type="button" data-action="remove" data-id="${item.id}">Remove</button>
+            </div>
+          </article>
+        `).join('')}
+      </div>
+    `
+    : `
+      <div class="empty-state">
+        <h2>Your list is ready for a first pick.</h2>
+        <p>Save a movie or series and it will stay here on this device.</p>
+        <a class="button button-primary" href="movies.html">Browse movies</a>
+      </div>
+    `;
 
   app.innerHTML = `
-
     <section class="page-content">
-
-
       <div class="page-heading">
-
-
         <div class="page-heading-copy">
-
-          <p class="eyebrow">
-            Saved on this device
-          </p>
-
-          <h1 class="page-title">
-            My List
-          </h1>
-
-          <p class="page-lede">
-            Your own queue. Add titles, mark what you
-            have watched, and clear anything you’re done with.
-          </p>
-
+          <p class="eyebrow">Saved on this device</p>
+          <h1 class="page-title">My List</h1>
+          <p class="page-lede">Your own queue. Add titles, mark what you have watched, and clear anything you’re done with.</p>
         </div>
-
-
         <div class="list-summary">
-
-          <span class="summary-number">
-            ${items.length}
-          </span>
-
-          <span>
-            ${plannedCount} planned
-            <br />
-            ${watchedCount} watched
-          </span>
-
+          <span class="summary-number">${items.length}</span>
+          <span>${plannedCount} planned<br />${watchedCount} watched</span>
         </div>
-
-
       </div>
-
-
-      ${
-        items.length
-          ? `
-            <div class="saved-list">
-
-              ${items
-                .map(
-                  (item) => `
-                    <article class="saved-item">
-
-
-                      <img
-                        class="saved-poster"
-                        src="${posterUrl(item, 'w185')}"
-                        alt="${escapeHtml(item.title)} poster"
-                        onerror="this.hidden=true"
-                      />
-
-
-                      <div>
-
-                        <h2 class="saved-title">
-
-                          <a
-                            href="movie.html?id=${encodeURIComponent(item.id)}"
-                          >
-                            ${escapeHtml(item.title)}
-                          </a>
-
-                        </h2>
-
-
-                        <p class="saved-meta">
-
-                          ${item.year}
-
-                          ·
-
-                          ${escapeHtml(item.genre)}
-
-                          ·
-
-                          ★ ${escapeHtml(item.rating)}
-
-                        </p>
-
-                      </div>
-
-
-                      <div class="saved-actions">
-
-
-                        <label
-                          class="sr-only"
-                          for="status-${item.id}"
-                        >
-                          Viewing status for
-                          ${escapeHtml(item.title)}
-                        </label>
-
-
-                        <select
-                          class="status-select"
-                          id="status-${item.id}"
-                          data-action="status"
-                          data-id="${item.id}"
-                        >
-
-                          <option
-                            value="planned"
-                            ${
-                              item.status === 'planned'
-                                ? 'selected'
-                                : ''
-                            }
-                          >
-                            Planned
-                          </option>
-
-
-                          <option
-                            value="watched"
-                            ${
-                              item.status === 'watched'
-                                ? 'selected'
-                                : ''
-                            }
-                          >
-                            Watched
-                          </option>
-
-                        </select>
-
-
-                        <button
-                          class="button button-danger button-small"
-                          type="button"
-                          data-action="remove"
-                          data-id="${item.id}"
-                        >
-                          Remove
-                        </button>
-
-
-                      </div>
-
-
-                    </article>
-                  `
-                )
-                .join('')}
-
-            </div>
-          `
-          : `
-            <div class="empty-state">
-
-              <h2>
-                Your list is ready for a first pick.
-              </h2>
-
-              <p>
-                Save a movie or series and it will stay
-                here on this device.
-              </p>
-
-              <a
-                class="button button-primary"
-                href="movies.html"
-              >
-                Browse movies
-              </a>
-
-            </div>
-          `
-      }
-
-
+      ${listContent}
     </section>
-
-
     <footer class="site-footer">
-
-      <span>
-        <strong>StreamFlix</strong>
-        · Your next story starts here.
-      </span>
-
-      <span>
-        Your list is stored in this browser only.
-      </span>
-
+      <span><strong>StreamFlix</strong> · Your next story starts here.</span>
+      <span>Your list is stored in this browser only.</span>
     </footer>
   `;
 }
-
-
-// =========================
-// PAGE ROUTER
-// =========================
-
 function renderCurrentPage() {
 
   renderHeader();
@@ -1346,19 +992,11 @@ function renderCurrentPage() {
 }
 
 
-// =========================
-// CLICK EVENTS
-// =========================
-// =========================
-// CLICK EVENTS
-// =========================
-
 document.addEventListener(
   'click',
     (event) => {
 
     // =========================
-    // LOGIN / LOGOUT
     // =========================
 
     const authControl =
@@ -1389,7 +1027,6 @@ document.addEventListener(
 
 
     // =========================
-    // NORMAL ACTIONS
     // =========================
 
     const control =
@@ -1407,7 +1044,6 @@ document.addEventListener(
 
 
     // =========================
-    // ADD TO MY LIST
     // =========================
 
     if (action === 'add') {
@@ -1419,7 +1055,6 @@ document.addEventListener(
 
 
     // =========================
-    // PLAY
     // =========================
 
     if (action === 'play') {
@@ -1436,7 +1071,6 @@ document.addEventListener(
       const startPlayback = () => {
         restorePlaybackPosition(player, id);
         player.play().catch(() => {
-          // The visible native controls remain available if playback is blocked.
         });
       };
 
@@ -1596,7 +1230,6 @@ document.addEventListener(
 
 
     // =========================
-    // CLOSE PLAYER
     // =========================
 
     if (action === 'close-player') {
@@ -1619,7 +1252,6 @@ document.addEventListener(
 
 
     // =========================
-    // WATCH TRAILER
     // =========================
 
     if (action === 'trailer') {
@@ -1668,7 +1300,6 @@ document.addEventListener(
 
 
     // =========================
-    // CLOSE TRAILER
     // =========================
 
     if (action === 'close-trailer') {
@@ -1697,7 +1328,6 @@ document.addEventListener(
 
 
     // =========================
-    // REMOVE FROM MY LIST
     // =========================
 
     if (action === 'remove') {
@@ -1779,10 +1409,7 @@ const syncPlayerTitle = (titleId) => {
   const item = byId(titleId);
 
   if (!item) return;
-
-  if (titleNode) {
-    titleNode.textContent = item.title;
-  }
+  titleNode.textContent = item.title;
 };
 
 const syncPlayerDisplay = () => {
@@ -1863,10 +1490,6 @@ document.addEventListener('fullscreenchange', () => {
   fullButton.setAttribute('aria-label', isFull ? 'Exit fullscreen' : 'Enter fullscreen');
 });
 
-// =========================
-// WATCHLIST STATUS UPDATE
-// =========================
-
 document.addEventListener(
   'change',
   (event) => {
@@ -1907,8 +1530,7 @@ document.addEventListener(
 );
 
 
-// =========================
-// START APPLICATION
-// =========================
-
 renderCurrentPage();
+
+
+
