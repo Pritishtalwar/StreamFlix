@@ -16,6 +16,7 @@ dist-ssr/
 # Environment secrets
 .env
 .env.*
+!.env.example
 
 # Editor files
 .vscode/
@@ -30,3 +31,11 @@ dist-ssr/
 .DS_Store
 Thumbs.db
 Desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# Debug files
+*.stackdump
